@@ -1,9 +1,14 @@
 const Discord = require("discord.js");
+require("dotenv").config();
+/////////////////////////////////////////////////////////// COMMANDS
 const joke = require("./commands/joke.js");
 const adduser = require("./commands/adduser.js");
 const removeuser = require("./commands/removeuser.js");
 const db = require("./mysqldb/db.js"); 
-require("dotenv").config();
+const giverole = require("./commands/giverole.js");
+const striprole = require("./commands/striprole.js");
+///////////////////////////////////////////////////////////
+
 
 const client = new Discord.Client({
     intents:  [Discord.GatewayIntentBits.Guilds,
@@ -15,6 +20,8 @@ client.commands = new Discord.Collection();
 client.commands.set(joke.data.name, joke);
 client.commands.set(adduser.data.name, adduser);
 client.commands.set(removeuser.data.name, removeuser);
+client.commands.set(giverole.data.name, giverole);
+client.commands.set(striprole.data.name, striprole);
 
 const badWords = [process.env.badword_1,process.env.badword_2,process.env.badword_3,process.env.badword_4];
 

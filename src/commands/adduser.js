@@ -5,9 +5,10 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName("add")
     .setDescription("adds a user to the database")
-    .addUserOption(option => option.setName("_user").setDescription("mention the user you want to add").setRequired(true)) ,
+    .addUserOption(option => option.setName("user").setDescription("mention the user you want to add").setRequired(true)) ,
+    
     async execute(interaction, connection) {
-        let user = interaction.options.getUser("_user");
+        let user = interaction.options.getUser("user");
         let userName = user.username;
         let globalName = user.globalName || null;
         let id = user.id;

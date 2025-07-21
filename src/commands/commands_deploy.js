@@ -1,4 +1,5 @@
 const { REST, Routes } = require('discord.js');
+const removerole = require('./striprole.js');
 require('dotenv').config({ path: '../.env' });
 
 
@@ -7,7 +8,9 @@ const rest = new REST().setToken(process.env.BOT_TOKEN);
 // append the new commands here No need to modify anything else
 const commands = [require("./joke.js").data.toJSON(), 
                   require("./adduser.js").data.toJSON(), 
-                  require("./removeuser.js").data.toJSON()]; 
+                  require("./removeuser.js").data.toJSON(),
+                  require("./giverole.js").data.toJSON(),
+                  require("./striprole.js").data.toJSON()]; 
 
 // deployment
 (async function() {
