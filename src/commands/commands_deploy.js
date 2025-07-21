@@ -10,7 +10,8 @@ const commands = [require("./joke.js").data.toJSON(),
                   require("./adduser.js").data.toJSON(), 
                   require("./removeuser.js").data.toJSON(),
                   require("./giverole.js").data.toJSON(),
-                  require("./striprole.js").data.toJSON()]; 
+                  require("./striprole.js").data.toJSON(),
+                  require("./delmessages.js").data.toJSON()]; 
 
 // deployment
 (async function() {

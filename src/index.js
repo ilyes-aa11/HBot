@@ -7,6 +7,7 @@ const removeuser = require("./commands/removeuser.js");
 const db = require("./mysqldb/db.js"); 
 const giverole = require("./commands/giverole.js");
 const striprole = require("./commands/striprole.js");
+const delmsg = require("./commands/delmessages.js");
 ///////////////////////////////////////////////////////////
 
 
@@ -22,6 +23,7 @@ client.commands.set(adduser.data.name, adduser);
 client.commands.set(removeuser.data.name, removeuser);
 client.commands.set(giverole.data.name, giverole);
 client.commands.set(striprole.data.name, striprole);
+client.commands.set(delmsg.data.name, delmsg);
 
 const badWords = [process.env.badword_1,process.env.badword_2,process.env.badword_3,process.env.badword_4];
 
