@@ -15,6 +15,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName("give")
     .setDescription("gives a role to a user")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
     .addUserOption(usr)
     .addRoleOption(role),
 

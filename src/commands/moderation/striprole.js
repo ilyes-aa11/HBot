@@ -15,6 +15,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName("strip")
     .setDescription("strips a user from a role")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
     .addUserOption(usr)
     .addRoleOption(role),
 
