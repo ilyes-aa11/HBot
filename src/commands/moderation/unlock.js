@@ -1,4 +1,4 @@
-const {SlashCommandBuilder , PermissionFlagsBits} = require("discord.js")
+const {SlashCommandBuilder , PermissionFlagsBits} = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,13 +11,13 @@ module.exports = {
 
     async execute(interaction) {
         if(interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) {
-            let targetRole = interaction.options.getRole("role") || interaction.guild.roles.everyone
+            let targetRole = interaction.options.getRole("role") || interaction.guild.roles.everyone;
             await interaction.channel.permissionOverwrites.edit(targetRole , {
                 SendMessages: true
-            })
-            await interaction.reply(`Channel unlocked for <@&${targetRole.id}>`)
+            });
+            await interaction.reply(`Channel unlocked for <@&${targetRole.id}>`);
         }
         else 
-            await interaction.reply({content: "Missing permissions!", ephemeral: true})
+            await interaction.reply({content: "Missing permissions!", ephemeral: true});
     }
 }
