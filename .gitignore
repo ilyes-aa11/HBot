@@ -2,3 +2,4 @@ src/.env
 node_files/
 node_modules/
 src/hidden
+todo.txt
