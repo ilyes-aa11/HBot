@@ -8,7 +8,7 @@ const rest = new REST().setToken(process.env.BOT_TOKEN);
 const commands = [require("./fun/joke.js").data.toJSON(), 
                   require("./moderation/giverole.js").data.toJSON(),
                   require("./moderation/striprole.js").data.toJSON(),
-                  require("./moderation/delmessages.js").data.toJSON(),
+                  require("./moderation/delmsg.js").data.toJSON(),
                   require("./utility/info.js").data.toJSON(),
                   require("./moderation/lock.js").data.toJSON(),
                   require("./moderation/unlock.js").data.toJSON(),

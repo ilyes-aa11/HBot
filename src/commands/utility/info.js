@@ -8,7 +8,6 @@ module.exports = {
     async execute(interaction) {
         let embed = new EmbedBuilder()
         .setTitle(`${interaction.guild.name} info`)
-        .setAuthor({name: `${interaction.user.tag}`,iconURL: `${interaction.user.avatarURL()}`})
         .setColor("#004AF7")
         .addFields(
             {name: "Owner" , value:`<@${interaction.guild.ownerId}>`},
@@ -21,9 +20,16 @@ module.exports = {
 
         let guildIcon = interaction.guild.iconURL({ dynamic: true });
         let botIcon = interaction.client.user.avatarURL({dynamic: true});
+        let userIcon = interaction.user.avatarURL({dynamic: true});
+
+        if(userIcon) embed.setAuthor({name: `${interaction.user.tag}`,iconURL: `${interaction.user.avatarURL()}`});
+        else embed.setAuthor({name: `${interaction.user.tag}`});
+
         if(guildIcon) embed.setThumbnail(`${guildIcon}`);
-        if(botIcon) embed.setFooter({text: "embed message provided through /info command" , iconURL: `${botIcon}`});
-        else embed.setFooter({text: "embed message provided through /info command"});
+
+        if(botIcon) embed.setFooter({text: "Embed provided through /info command" , iconURL: `${botIcon}`});
+        else embed.setFooter({text: "Embed provided through /info command"});
+        
         await interaction.reply({embeds: [embed]});
     }
 }

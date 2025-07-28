@@ -1,19 +1,8 @@
 const Discord = require("discord.js");
-const mysql = require("./mysqldb/db.js")
+const mysql = require("./mysqldb/db.js");
+const fs = require('fs');
+const path = require('path');
 require("dotenv").config();
-/////////////////////////////////////////////////////////// COMMANDS
-const commandSet = [
-    require("./commands/fun/joke.js"),
-    require("./commands/moderation/giverole.js"),
-    require("./commands/moderation/striprole.js"),
-    require("./commands/moderation/delmessages.js"),
-    require("./commands/utility/info.js"),
-    require("./commands/moderation/lock.js"),
-    require("./commands/moderation/unlock.js"),
-    require("./commands/config/setwelcome.js")
-]
-///////////////////////////////////////////////////////////
-
 
 const client = new Discord.Client({
     intents:  [Discord.GatewayIntentBits.Guilds,
@@ -23,13 +12,36 @@ const client = new Discord.Client({
                Discord.GatewayIntentBits.GuildPresences]
 });
 
-// REGISTRING THE COMMANDS FOR QUICK RETRIEVAL ON InteractionCreate EVENT TRIGGER
+// ADDING THE COMMANDS  
 client.commands = new Discord.Collection();
-for(command of commandSet) {
-    client.commands.set(command.data.name , command);
+
+let commandsPaths = fs.readdirSync('./commands', {recursive: true}).filter(command => 
+    path.extname(command) === ".js" && path.basename(command) !== "commands_deploy.js");
+
+commandsPaths = commandsPaths.map(item => path.join(__dirname,'commands',item));
+
+for(command of commandsPaths) {
+    let commandModule = require(path.normalize(command));
+    if("data" in commandModule && "execute" in commandModule)
+        client.commands.set(commandModule.data.name, commandModule);
+    else 
+        console.error(`Missing properties for the command defined in the path ${command}`);
 }
 
-// ADDING ALL THE WELCOME CONFIGS TO A COLLECTION FOR FAST RETRIEVAL
+// ADDING THE EVENT HANDLERS
+client.eventHandler = new Discord.Collection();
+
+let eventHandlerPaths = fs.readdirSync('./events',{recursive: true}).map(event => path.join(__dirname,'events',event));
+
+for(eventHandler of eventHandlerPaths) {
+    let eventHandlerModule = require(path.normalize(eventHandler));
+    if("event" in eventHandlerModule && "handler" in eventHandlerModule)
+        client.eventHandler.set(eventHandlerModule.event, eventHandlerModule.handler);
+    else 
+        console.error(`Missing properties for the event handler in the path ${eventHandler}`);
+}
+
+// ADDING ALL THE WELCOME CONFIGS 
 client.welcomes = new Discord.Collection();
 (async function() {
     mysql.createConnection()
@@ -45,63 +57,18 @@ client.welcomes = new Discord.Collection();
     })
 })()
 
-const badWords = [process.env.badword_1,process.env.badword_2,process.env.badword_3,process.env.badword_4];
+const curseWords = [process.env.badword_1,process.env.badword_2,process.env.badword_3,process.env.badword_4];
 
 client.once(Discord.Events.ClientReady, (client) => {
     console.log(`bot ready as ${client.user.tag}`)
     client.user.setActivity("Users requests",{type: Discord.ActivityType.Listening});
 });
 
-client.on(Discord.Events.MessageCreate, msg => {
-    if(badWords.some(word => msg.content.includes(word))) msg.delete()
-        .then(msg => msg.channel.send(`message was deleted for containing cuss words from @${msg.author.username}`));
-    else if(msg.content === "hello" || msg.content === "hi") msg.reply("hi there");
-});
+client.on(Discord.Events.MessageCreate,message => client.eventHandler.get(Discord.Events.MessageCreate)(client,curseWords,message));
 
-client.on(Discord.Events.InteractionCreate, async interaction => {
-    if(interaction.isChatInputCommand()) {
-        let inputCommand = client.commands.get(interaction.commandName);
-        if(!inputCommand) {
-            await interaction.reply("No such command was found");
-            return;
-        } // slash command does not exist
-       
-        try {
-            await inputCommand.execute(interaction);
-        }
-        catch(err) {
-            console.error("Something went wrong with InteractionCreate Event handler");
-            console.error(err);
-            await interaction.reply("something went wrong please try again");
-        }
-    }
-})
+client.on(Discord.Events.InteractionCreate,interaction => client.eventHandler.get(Discord.Events.InteractionCreate)(client,interaction));
 
-client.on(Discord.Events.GuildMemberAdd, async member => {
-    try {
-        let guildId = member.guild.id;
-        if(client.welcomes.has(guildId)) {
-            let welcomeConf = client.welcomes.get(guildId);
-            let welcomeChannelId = welcomeConf.welcome_channel;
-            let welcomeChannel = member.guild.channels.cache.get(welcomeChannelId);
-            if(!welcomeChannel) {
-                welcomeChannel = await member.guild.channels.fetch(welcomeChannelId);
-            }
-            let welcomeMessage = welcomeConf.welcome_message;
-            
-            if (welcomeChannel && welcomeChannel.isTextBased()) {
-                await welcomeChannel.send(welcomeMessage.replaceAll("@user", `<@${member.id}>`));
-            } 
-            else {
-                console.warn(`Welcome channel not found or not text-based for guild ${guildId}`);
-            }
-        }
-    } catch(err) {
-        console.error("Something went wrong with GuildMemberAdd Event handler");
-        console.error(err);
-    }
-        
-})
+client.on(Discord.Events.GuildMemberAdd,member => client.eventHandler.get(Discord.Events.GuildMemberAdd)(client,member));
 
 client.login(process.env.BOT_TOKEN);
 
