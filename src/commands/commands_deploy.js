@@ -1,20 +1,21 @@
 const { REST, Routes } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config({ path: '../.env' });
 
 
 const rest = new REST().setToken(process.env.BOT_TOKEN);
 
 // append the new commands here No need to modify anything else
-const commands = [require("./fun/joke.js").data.toJSON(), 
-                  require("./moderation/giverole.js").data.toJSON(),
-                  require("./moderation/striprole.js").data.toJSON(),
-                  require("./moderation/delmsg.js").data.toJSON(),
-                  require("./utility/info.js").data.toJSON(),
-                  require("./moderation/lock.js").data.toJSON(),
-                  require("./moderation/unlock.js").data.toJSON(),
-                  require("./config/setwelcome.js").data.toJSON(),
-                  require("./config/setbuttonroles.js").data.toJSON(),
-                  require("./utility/buttonroles.js").data.toJSON()];
+const filesPath = fs.readdirSync(__dirname, {recursive: true})
+.filter(file => path.extname(file) == ".js" && path.basename(file) != "commands_deploy.js")
+.map(file => path.join(__dirname,file));
+
+let commands = []
+for(file of filesPath) {
+  commands.push(require(file).data.toJSON());
+}
+
 
 // deployment
 (async function() {

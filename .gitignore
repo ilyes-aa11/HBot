@@ -3,3 +3,4 @@ node_files/
 node_modules/
 src/hidden
 todo.txt
+src/test.js

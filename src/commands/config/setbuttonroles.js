@@ -18,7 +18,7 @@ module.exports = {
         const guildRoles = await interaction.guild.roles.fetch();
         const roles = interaction.options.getString("role_button").split(':');
         if(roles.length == 0) throw new Error("Provided no or malformatted arguments");
-        if(roles.length > 25) throw new Error(`Execeeded maximum arguments length ${buttons.length}`);
+        if(roles.length > 25) throw new Error(`Execeeded maximum arguments length ${roles.length}`);
 
         for(role of roles) {
             if(!guildRoles.find(r => r.name == role)) throw new Error(`No role was found with the name ${role}`);
