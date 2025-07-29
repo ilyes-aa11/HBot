@@ -33,7 +33,7 @@ module.exports = {
             sql_query = "UPDATE server_conf SET welcome_channel=? , welcome_message=? WHERE guild_id=?";
             await mysql.queryDb(sql_query,connection,[channel_id,msg,guild_id]);
         }
-
+        mysql.endConnection(connection);
         await interaction.reply("Welcome configs registered successfully");
     }
 }

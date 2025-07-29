@@ -12,7 +12,9 @@ const commands = [require("./fun/joke.js").data.toJSON(),
                   require("./utility/info.js").data.toJSON(),
                   require("./moderation/lock.js").data.toJSON(),
                   require("./moderation/unlock.js").data.toJSON(),
-                  require("./config/setwelcome.js").data.toJSON()]; 
+                  require("./config/setwelcome.js").data.toJSON(),
+                  require("./config/setbuttonroles.js").data.toJSON(),
+                  require("./utility/buttonroles.js").data.toJSON()];
 
 // deployment
 (async function() {

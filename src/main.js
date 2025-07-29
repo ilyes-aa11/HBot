@@ -57,7 +57,7 @@ client.welcomes = new Discord.Collection();
     })
 })()
 
-const curseWords = [process.env.badword_1,process.env.badword_2,process.env.badword_3,process.env.badword_4];
+const curseWords = process.env.curseWords.split(",");
 
 client.once(Discord.Events.ClientReady, (client) => {
     console.log(`bot ready as ${client.user.tag}`)
