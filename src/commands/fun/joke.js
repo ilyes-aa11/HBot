@@ -1,7 +1,10 @@
 const {SlashCommandBuilder} = require('discord.js');
 
 module.exports = {
-    data: new SlashCommandBuilder().setName("joke").setDescription("Get a random joke"),
+    data: new SlashCommandBuilder()
+    .setName("joke")
+    .setDescription("Get a random joke"),
+    
     async execute(interaction) {
         let response = await getRandomJoke();
         if(!response) response = "i dont have a joke right now try later";

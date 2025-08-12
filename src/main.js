@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const mysql = require("./mysqldb/db.js");
 const fs = require('fs');
 const path = require('path');
 require("dotenv").config();
@@ -40,22 +39,6 @@ for(eventHandler of eventHandlerPaths) {
     else 
         console.error(`Missing properties for the event handler in the path ${eventHandler}`);
 }
-
-// ADDING ALL THE WELCOME CONFIGS 
-client.welcomes = new Discord.Collection();
-(async function() {
-    mysql.createConnection()
-    .then(connection =>
-        mysql.queryDb("SELECT guild_id,welcome_channel,welcome_message FROM server_conf",connection)
-    ).then(rows => {
-        for(row of rows) {
-            client.welcomes.set(row.guild_id, row)
-        }
-    }).catch(err => {
-        console.log("Something wrong happened with retrieving welcome configs from database")
-        console.error(err)
-    })
-})()
 
 const curseWords = process.env.curseWords.split(",");
 

@@ -1,4 +1,4 @@
-const {SlashCommandBuilder,SlashCommandUserOption,SlashCommandRoleOption,PermissionFlagsBits} = require("discord.js");
+const {SlashCommandBuilder,SlashCommandUserOption,SlashCommandRoleOption,PermissionFlagsBits, InteractionContextType} = require("discord.js");
 
 
 let usr = new SlashCommandUserOption()
@@ -16,6 +16,7 @@ module.exports = {
     .setName("give")
     .setDescription("gives a role to a user")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
+    .setContexts(InteractionContextType.Guild)
     .addUserOption(usr)
     .addRoleOption(role),
 

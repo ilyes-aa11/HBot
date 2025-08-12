@@ -1,10 +1,11 @@
-const {SlashCommandBuilder , PermissionFlagsBits} = require("discord.js");
+const {SlashCommandBuilder , PermissionFlagsBits, InteractionContextType} = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("lock")
     .setDescription("Locks channel and blocks users from sending messages")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
+    .setContexts(InteractionContextType.Guild)
     .addRoleOption(option =>
         option.setName("role").setDescription("Optional default = @everyone")
     ),

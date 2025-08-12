@@ -5,6 +5,7 @@ module.exports = {
     .setName("unlock")
     .setDescription("Unlocks the channel if it was locked")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
+    .setContexts(InteractionContextType.Guild)
     .addRoleOption(option =>
         option.setName("role").setDescription("Optional default = @everyone")
     ),

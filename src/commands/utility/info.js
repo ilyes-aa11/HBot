@@ -3,7 +3,8 @@ const {SlashCommandBuilder, EmbedBuilder, GuildMember} = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("info")
-    .setDescription("Provides a detailed message about the server info") ,
+    .setDescription("Provides a detailed message about the server info") 
+    .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         let embed = new EmbedBuilder()

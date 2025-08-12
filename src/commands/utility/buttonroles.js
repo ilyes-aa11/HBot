@@ -1,15 +1,15 @@
 const {SlashCommandBuilder,MessageFlags,ActionRowBuilder,ButtonBuilder,ButtonStyle} = require("discord.js");
-const mysql = require("../../mysqldb/db.js");
+const mysql = require("../../database/db.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("buttonroles")
-    .setDescription("Provides message containing a list of roles in form of button that can chosen from"),
+    .setDescription("Provides message containing a list of roles in form of button that can chosen from")
+    .setContexts(InteractionContextType.Guild),
 
     async execute(interaction) {
         const guildId = interaction.guildId;
-        const connection = await mysql.createConnection();
-        let row = await mysql.queryDb("SELECT roles FROM btnroles_conf WHERE guild_id=?",connection,[String(guildId)]);
+        let [row] = await mysql.execute("SELECT roles FROM btnroles_conf WHERE guild_id=?",[String(guildId)]);
         if(row.length == 0) {
             interaction.reply({content: "This command is not configured yet!", flags: MessageFlags.Ephemeral});
             return;
