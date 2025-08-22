@@ -21,7 +21,10 @@ async function handler(client, interaction) {
             console.error("Something went wrong with InteractionCreate ChatInputCommand Event handler");
             console.error(err);
             if(!interaction.replied) {
-                await interaction.reply("something went wrong please try again");
+                await interaction.reply("Something went wrong please try again");
+            }
+            else {
+                interaction.editReply("Something went wrong please try again");
             }
         }
     }

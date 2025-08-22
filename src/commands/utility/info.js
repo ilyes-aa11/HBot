@@ -1,4 +1,4 @@
-const {SlashCommandBuilder, EmbedBuilder, GuildMember} = require("discord.js");
+const {SlashCommandBuilder, EmbedBuilder, GuildMember,InteractionContextType} = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()

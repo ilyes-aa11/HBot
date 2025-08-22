@@ -1,4 +1,4 @@
-const {SlashCommandBuilder,MessageFlags,ActionRowBuilder,ButtonBuilder,ButtonStyle} = require("discord.js");
+const {SlashCommandBuilder,MessageFlags,ActionRowBuilder,ButtonBuilder,ButtonStyle,InteractionContextType} = require("discord.js");
 const mysql = require("../../database/db.js");
 
 module.exports = {

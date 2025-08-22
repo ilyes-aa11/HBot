@@ -7,6 +7,7 @@ const client = new Discord.Client({
     intents:  [Discord.GatewayIntentBits.Guilds,
                Discord.GatewayIntentBits.GuildMembers,
                Discord.GatewayIntentBits.GuildMessages,
+               Discord.GatewayIntentBits.GuildModeration,
                Discord.GatewayIntentBits.MessageContent,
                Discord.GatewayIntentBits.GuildPresences]
 });
@@ -43,6 +44,7 @@ for(eventHandler of eventHandlerPaths) {
 const curseWords = process.env.curseWords.split(",");
 
 client.once(Discord.Events.ClientReady, (client) => {
+    client.commands.get("tempban").readTempBans(client);
     console.log(`bot ready as ${client.user.tag}`)
     client.user.setActivity("Users requests",{type: Discord.ActivityType.Listening});
 });
@@ -52,6 +54,8 @@ client.on(Discord.Events.MessageCreate,message => client.eventHandler.get(Discor
 client.on(Discord.Events.InteractionCreate,interaction => client.eventHandler.get(Discord.Events.InteractionCreate)(client,interaction));
 
 client.on(Discord.Events.GuildMemberAdd,member => client.eventHandler.get(Discord.Events.GuildMemberAdd)(client,member));
+
+client.on(Discord.Events.GuildBanRemove,ban => client.eventHandler.get(Discord.Events.GuildBanRemove)(ban));
 
 client.login(process.env.BOT_TOKEN);
 
